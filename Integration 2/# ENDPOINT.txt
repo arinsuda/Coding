@@ -1,0 +1,22 @@
+# ENDPOINT
+[LOGIN] 
+- localhost:8080/login
+[BOARDS] 
+- [GET] localhost:8080/v3/boards
+- [GET] localhost:8080/v3/boards/{board_id}
+- [PUT] localhost:8080/v3/boards
+- [PATCH] localhost:8080/v3/boards/{board_id}
+[TASKS]
+- [GET] localhost:8080/v3/boards/{board_id}/tasks
+- [GET] localhost:8080/v3/boards/{board_id}/task/{task_id}
+- [POST] localhost:8080/v3/boards/{board_id}/tasks
+- [PUT] localhost:8080/v3/boards/{board_id}/task/{task_id}
+- [DEL] localhost:8080/v3/boards/{board_id}/task/{task_id}
+[STATUSES]
+- [GET] localhost:8080/v3/boards/{board_id}/statuses
+- [GET] localhost:8080/v3/boards/{board_id}/statuses/{status_name}
+- [GET] localhost:8080/v3/boards/{board_id}/statuses/{status_id}
+- [POST] localhost:8080/v3/boards/{board_id}/statuses
+- [PUT] localhost:8080/v3/boards/{board_id}/statuses
+- [DEL] localhost:8080/v3/boards/{board_id}/statuses
+- [DEL] localhost:8080/v3/boards/{board_id}/statuses/{status_id}/{status_newId}

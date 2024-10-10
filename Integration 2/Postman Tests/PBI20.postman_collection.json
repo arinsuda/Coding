@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "8f44f2d6-8761-49db-8f58-f26dfce31988",
+		"name": "PBI20",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32360164"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/login 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"itbkk.pichet\",\n    \"password\": \"ip23/PIC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/login 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"itbkk.somchai\",\n    \"password\": \"ip23/SOM\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/v3/boards/id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5zb21jaGFpIiwicm9sZSI6IlNUVURFTlQiLCJuYW1lIjoiSVRCS0sgU09NQ0hBSSIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvc3NhMy8iLCJpYXQiOjE3MjcwNzEwNDMsImV4cCI6MTcyNzA3Mjg0M30.qKAev-aMm9hzeKF7PT9PqKUz1mJWUcUVkxNm518wvzg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v3/boards/8bUN26SedQ/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"boards",
+						"8bUN26SedQ",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/v3/boards/id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5waWNoZXQiLCJyb2xlIjoiTEVDVFVSRVIiLCJuYW1lIjoiSVRCS0sgUElDSEVUIiwib2lkIjoiMDcxMjMzNGYtNDk4Mi00ZDI2LWE3ZWYtNGFkMGZmNTNjYjE4IiwiZW1haWwiOiJpdGJray5waWNoZXRAYWQuc2l0LmttdXR0LmFjLnRoIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL3NzYTMvIiwiaWF0IjoxNzI3MDg1MDU5LCJleHAiOjE3MjcwODY4NTl9.DyjtJDlvdnG6DqDTqBSd5937w4EK_DSvWSvTY3tF03s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"visibility\": \"public\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v3/boards/8bUN26SedQ",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"boards",
+						"8bUN26SedQ"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

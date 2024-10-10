@@ -1,0 +1,880 @@
+{
+	"info": {
+		"_postman_id": "45ded55c-588b-4c2d-a814-37e14e7c4af9",
+		"name": "PBI18",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32360164"
+	},
+	"item": [
+		{
+			"name": "test endpoint",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/v3/boards/515164/tasks/4141",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"boards",
+						"515164",
+						"tasks",
+						"4141"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"itbkk.somchai\",\n    \"password\": \"ip23/SOM\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"itbkk.somchai\",\n    \"password\": \"ip23/SOM\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/v2/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5vbGFybiIsInJvbGUiOiJMRUNUVVJFUiIsIm5hbWUiOiJJVEJLSyBPTEFSTiIsIm9pZCI6IjJiMmY5NGZkLTY4YmUtNGZmMi04YzY3LWNiMzVlMTM5ZjZmYiIsImVtYWlsIjoiaXRia2sub2xhcm5AYWQuc2l0LmttdXR0LmFjLnRoIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL3NzYTMvIiwiaWF0IjoxNzI2NTA5MDgwLCJleHAiOjE3MjY1MTA4ODB9.GFcm4McG-cUcG7Xy8koe2IXgPUEX98mYAQVSGQcwnp4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v2/tasks",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/v2/statuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5waWNoZXQiLCJyb2xlIjoiTEVDVFVSRVIiLCJvaWQiOiIwNzEyMzM0Zi00OTgyLTRkMjYtYTdlZi00YWQwZmY1M2NiMTgiLCJlbWFpbCI6Iml0YmtrLnBpY2hldEBhZC5zaXQua211dHQuYWMudGgiLCJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvc3NhMy8iLCJpYXQiOjE3MjY2NzM5MjEsImV4cCI6MTcyNjY3NTcyMX0.-QC4d5rZgQ4AYsjY2OHM7mzJ038_daO4lzkAv4tl2e4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/v2/statuses/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"statuses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5zb21zdWFuIiwicm9sZSI6IlNUVURFTlQiLCJuYW1lIjoiSVRCS0sgU09NU1VBTiIsIm9pZCI6IjgwYWRhMTJkLTE1MzQtNGVmMy04MDVmLTkwNzhkYWZjODI3NiIsImVtYWlsIjoiaXRia2suc29tc3VhbkBhZC5zaXQua211dHQuYWMudGgiLCJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvc3NhMy8iLCJpYXQiOjE3MjY3NDk0NDEsImV4cCI6MTcyNjc0OTQ0MX0.gFhFVlaO___zPbhioDnB_aTcRK5iKRd58gsj3Z4kUOQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/awdwad/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/awdwad/tasks",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"awdwad",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Test Create Task 4\",\r\n    \"description\": \"Test Create Task\",\r\n    \"assignees\": \"Test Create Task\",\r\n    \"status\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Test Create Task ID\",\r\n    \"description\": \"Test Create Task\",\r\n    \"assignees\": \"Test Create Task\",\r\n    \"status\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks/1",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Test Create Task ID\",\r\n    \"description\": \"Test Create Task\",\r\n    \"assignees\": \"Test Create Task\",\r\n    \"status\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task/1",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"task",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/tasks/1",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"tasks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/task/1",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"task",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"statuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statusese",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statusese",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"statusese"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"statusName\": \"Test Status\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"statuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"statusName\": \"Test Status\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statuses",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"statuses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statuses/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"test put\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statuses/1",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"statuses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses/100",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"test put\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses/100",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"statuses",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5raXR0aXd1dCIsInJvbGUiOiJTVEFGRiIsIm5hbWUiOiJJVEJLSyBLSVRUSVdVVCIsIm9pZCI6ImFhZTMzYjM1LWE0MmYtNDc5MS05OTZjLTY1OTg4ZThlZWZjNCIsImVtYWlsIjoiaXRia2sua2l0dGl3dXRAYWQuc2l0LmttdXR0LmFjLnRoIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL3NzYTMvIiwiaWF0IjoxNzI2NzQ4MjgyLCJleHAiOjE3MjY3NTAwODJ9.iHwTAhuur4_FHwpIt9bKXo_Yvq7n1yenv_gLrU7wL98",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v3/boards/YTgNCbItQc/statuses/100",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v3",
+						"boards",
+						"YTgNCbItQc",
+						"statuses",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses/10",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdGJray5zb21zdWFuIiwicm9sZSI6IlNUVURFTlQiLCJuYW1lIjoiSVRCS0sgU09NU1VBTiIsIm9pZCI6IjgwYWRhMTJkLTE1MzQtNGVmMy04MDVmLTkwNzhkYWZjODI3NiIsImVtYWlsIjoiaXRia2suc29tc3VhbkBhZC5zaXQua211dHQuYWMudGgiLCJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvc3NhMy8iLCJpYXQiOjE3MjY3NDk0NDEsImV4cCI6MTcyNjc1MTI0MX0.yEBcR9xo1YyKOAp2rG-sntTbCerMqzZsGgJimyRXNG4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://intproj23.sit.kmutt.ac.th/ssa3/api/v2/statuses/10",
+					"protocol": "http",
+					"host": [
+						"intproj23",
+						"sit",
+						"kmutt",
+						"ac",
+						"th"
+					],
+					"path": [
+						"ssa3",
+						"api",
+						"v2",
+						"statuses",
+						"10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

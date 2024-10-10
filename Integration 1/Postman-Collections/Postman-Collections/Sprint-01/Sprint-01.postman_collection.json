@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "19a5dd3a-ae94-4ebc-a219-74f211993f46",
+		"name": "Sprint-01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6637675",
+		"_collection_link": "https://grey-eclipse-546952.postman.co/workspace/INT211-Workspace~09b1369a-5418-4136-a772-898b7bfd1b09/collection/6637675-19a5dd3a-ae94-4ebc-a219-74f211993f46?action=share&source=collection_link&creator=6637675"
+	},
+	"item": [
+		{
+			"name": "PBI-1",
+			"item": [
+				{
+					"name": "View-Task-Table-Empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"expectedHost =  pm.variables.get(\"base_url\");",
+									"tests[\"The requested URL Host/Context: \"+pm.request.url.toString()] = expectedHost===expectedHost;",
+									"// console.log(expectedPath);",
+									"// console.log(pm.request.url.toString());",
+									"tests[\"response status is \"+ responseCode.name] = responseCode.code===200;",
+									"tests[\"response body length = \"+ responseBody.length + (responseBody.length===2?\" is OK\" : \" is invalid\")] = responseBody.length === 2;",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"No of task = \"+ jsonData.length, () => {",
+									"    if(jsonData.length>0) {",
+									"        console.log(\"No of task is \"+ jsonData.length + \" >> expected: 0\");",
+									"    }",
+									"    if(jsonData!==null && (! Array.isArray(jsonData))) {",
+									"        console.log(\"response json is not an Array (\"+ typeof(jsonData) + \")\");",
+									"    }",
+									"    pm.expect(jsonData).to.be.an(\"Array\");",
+									"    pm.expect(jsonData.length).to.equals(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View-Task-Table",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"expectedHost =  pm.variables.get(\"base_url\");",
+									"tests[\"The requested URL Host/Context: \"+pm.request.url.toString()] = expectedHost===expectedHost;",
+									"",
+									"tests[\"The response status is \"+ responseCode.name] = responseCode.code===200;",
+									"const tasks = pm.response.json();",
+									"pm.test(\"Response is an array \", function () {",
+									"    pm.expect(tasks).to.be.an('array');",
+									"});",
+									"pm.test(\"The expected no. of task = \"+ tasks.length, () => {",
+									"    if(tasks.length !== 4) {",
+									"        console.log(\"No of task is \"+ tasks.length + \" >> expected: 4\");",
+									"    }",
+									"    if(tasks!==null && (! Array.isArray(tasks))) {",
+									"        console.log(\"response json is not an Array (\"+ typeof(tasks) + \")\");",
+									"    }",
+									"    pm.expect(tasks).to.be.an(\"array\");",
+									"    pm.expect(tasks.length).to.equal(4);",
+									"});",
+									"",
+									"pm.test(\"The expected task attributes\", function () {",
+									"     tasks.forEach((task, index) => {",
+									"            pm.expect(Object.keys(task).length).to.equals(4);",
+									"            pm.expect(task).to.have.property('id');",
+									"            pm.expect(task).to.have.property('title');",
+									"            pm.expect(task).to.have.property('assignees');",
+									"            pm.expect(task).to.have.property('status');",
+									"     });",
+									"});",
+									"pm.test(\"Task ordering \", function () {",
+									"    const allTasks = JSON.parse(pm.variables.get(\"base_tasks\"));",
+									"     tasks.forEach((task, index) => {",
+									"            pm.expect(task.title).to.equals(allTasks[index].title);",
+									"     });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PBI-2",
+			"item": [
+				{
+					"name": "VIEW-TASK-DETAIL-Normal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var allTasks = JSON.parse(pm.variables.get(\"base_tasks\"));",
+									"",
+									"expectedHost =  pm.variables.get(\"base_url\");",
+									"tests[\"The requested URL Host/Context: \"+pm.request.url.toString()] = expectedHost===expectedHost;",
+									"tests[\"The response status is \"+ responseCode.name] = responseCode.code===200;",
+									"const task = pm.response.json();",
+									"console.log(task.id);",
+									"pm.test(\"Response is NOT an array \", function () {",
+									"    pm.expect(task).to.not.an('array');",
+									"});",
+									"",
+									"pm.test(\"The expected task attributes\", function () {",
+									"            pm.expect(Object.keys(task).length).to.equals(7);",
+									"            pm.expect(task).to.have.property('id');",
+									"            pm.expect(task).to.have.property('title');",
+									"            pm.expect(task).to.have.property('assignees');",
+									"            pm.expect(task).to.have.property('description');",
+									"            pm.expect(task).to.have.property('status');",
+									"            pm.expect(task).to.have.property('createdOn');",
+									"            pm.expect(task).to.have.property('updatedOn');",
+									"});",
+									"",
+									"var refId = -1; ",
+									"pm.test(\"Expected attributes value\", function () {",
+									"    allTasks.forEach((t, index) => {",
+									"        if(t.title===task.title){",
+									"            refId = index;",
+									"            pm.expect(task.status).to.equals(t.status);",
+									"            pm.expect(task.description).to.be.oneOf(t.description);        ",
+									"            pm.expect(task.assignees).to.be.oneOf(t.assignees);",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"The expected task title index\",()=> {",
+									"    pm.expect(refId).greaterThan(-1);",
+									"});",
+									"pm.test(\"Task Created On \", function () {",
+									"    var createdOn = new Date(Date.parse(task.createdOn));",
+									"    var expectedCreatedOn = new Date(Date.parse(allTasks[refId].createdOn));",
+									"",
+									"    var createdOnUtc = createdOn.toLocaleString(\"en-UK\", {timeZone: \"UTC\"});",
+									"    var createdOnIct = createdOn.toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"});",
+									"    var expectedCreatedOnIct = expectedCreatedOn.toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"});",
+									"    pm.expect(expectedCreatedOnIct).to.be.oneOf([createdOnIct, createdOnUtc]);",
+									"",
+									"    // const moment = require('moment')",
+									"    // createdOn = moment(task.createdOn);",
+									"    // expectedCreatedOn = moment(allTasks[refId].createdOn);",
+									"    // createdOnZ = createdOn.toLocaleString();",
+									"    // expectedCreatedOnZ = expectedCreatedOn.toLocaleString();",
+									"    // console.log(\"Task Created On : \"+ createdOnZ);",
+									"    // console.log(\"Expected Created On : \"+expectedCreatedOnZ);",
+									" ",
+									"    // pm.expect(createdOnZ).to.equal(expectedCreatedOnZ);",
+									"});",
+									"",
+									"pm.test(\"Task Updated On \", function () {",
+									"    var createdOn = new Date(Date.parse(task.updatedOn));",
+									"    var expectedCreatedOn = new Date(Date.parse(allTasks[refId].updatedOn));",
+									"",
+									"    var createdOnUtc = createdOn.toLocaleString(\"en-UK\", {timeZone: \"UTC\"});",
+									"    var createdOnIct = createdOn.toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"});",
+									"    var expectedCreatedOnIct = expectedCreatedOn.toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"});",
+									"    pm.expect(expectedCreatedOnIct).to.be.oneOf([createdOnIct, createdOnUtc]);",
+									"",
+									"    // const moment = require('moment')",
+									"    // updatedOn = moment(task.updatedOn);",
+									"    // expectedUpdateddOn = moment(allTasks[refId].updatedOn);",
+									"",
+									"    // updatedOnZ = updatedOn.toLocaleString();",
+									"    // expectedUpdatedOnZ = expectedUpdateddOn.toLocaleString();",
+									"    // console.log(\"Task Updated On : \"+ updatedOnZ);",
+									"    // console.log(\"Expected Updated On : \"+expectedUpdatedOnZ);",
+									"",
+									"    // pm.expect(updatedOnZ).to.equal(expectedUpdatedOnZ);",
+									"});",
+									"",
+									"//     postman.setNextRequest(\"VIEW-TASK-DETAIL-Normal\");",
+									"//     i++;",
+									"// }"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"var id = pm.environment.get(\"currentTaskIdIndex\");",
+									"if(id>=3) {",
+									"    id = 0; ",
+									"} else {",
+									"    id++;",
+									"}",
+									"pm.environment.set(\"currentTaskIdIndex\", id);",
+									"taskIds = JSON.parse(pm.variables.get(\"taskIds\"));",
+									"pm.environment.set(\"taskId\",taskIds[id]);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/{{taskId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VIEW-TASK-DETAIL-Failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"expectedHost =  pm.variables.get(\"base_url\");",
+									"tests[\"The requested URL Host/Context: \"+expectedHost] = expectedHost===expectedHost;",
+									"pm.test(\"The expected response status code is 404\", function() {",
+									"    pm.expect(responseCode.code).to.equal(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/900",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"900"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

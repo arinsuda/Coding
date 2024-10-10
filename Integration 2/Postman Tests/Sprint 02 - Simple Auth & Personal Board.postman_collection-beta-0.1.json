@@ -1,0 +1,1583 @@
+{
+	"info": {
+		"_postman_id": "9ee597a5-bd89-44b1-a0bc-7268ec31602b",
+		"name": "Sprint 02 - Simple Auth & Personal Board",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6637675"
+	},
+	"item": [
+		{
+			"name": "PBI18 - Simple Authz",
+			"item": [
+				{
+					"name": "Check Response with Valid User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index == undefined) {",
+									"    index = 0;",
+									"    pm.environment.set(\"iteration_status\", index);",
+									"}",
+									"",
+									"userInfo = utils.getNextUser(users, index);",
+									"body_str = JSON.stringify(userInfo.user);",
+									"",
+									"pm.request.body.raw = body_str;",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200 - User: \"+ userInfo.user.userName, function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"console.log(userInfo);",
+									"",
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index != userInfo.index) {",
+									"    index = userInfo.index;",
+									"}",
+									"index++;",
+									"pm.environment.set(\"iteration_status\", index);",
+									"",
+									"if(userInfo.isLastUser == true) {",
+									"    pm.environment.set(\"iteration_status\", -1);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access boards without token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access v2/tasks without token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access v2/statuses without token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/statuses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access boards with expire token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000) - 31*aMinute;",
+									"claim.exp = Math.trunc(now.valueOf()/1000) - aMinute ;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create boards with expire token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000) - 31*aMinute;",
+									"claim.exp = Math.trunc(now.valueOf()/1000) - aMinute ;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"Default Personal Board\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access boards with invalid secret key token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey(false));",
+									"console.log(\"Key : \"+ utils.selectSecretKey(false));",
+									"",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update boards with invalid secret key token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey(false));",
+									"console.log(\"Key : \"+ utils.selectSecretKey(false));",
+									"",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"My Board\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards/1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards",
+								"1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete boards with invalid secret key token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey(false));",
+									"console.log(\"Key : \"+ utils.selectSecretKey(false));",
+									"",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "secret",
+									"value": "{{ACTIVE_SECRET_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "payload",
+									"value": "{{claims}}",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{\n  \"typ\": \"JWT\",\n  \"alg\": \"HS256\"\n}",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"My Board\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards/1234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards",
+								"1234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access boards with valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json array\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access v2/tasks with valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json array\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/tasks",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Access v2/statues with valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json array\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/statuses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PBI19 - Personal Board",
+			"item": [
+				{
+					"name": "Login with tmp User - Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var responseJson = pm.response.json();",
+									"// Validate that the response is json object",
+									"pm.test(\"Response with access_token\", function () {",
+									"    pm.expect(responseJson).to.be.has.property('access_token');",
+									"    pm.environment.set(\"TMP_USER_ACCESS_TOKEN\", responseJson.access_token);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var newUser = {};",
+									"const getNewUser = {",
+									"        url:  \"https://intproj23.sit.kmutt.ac.th/ft/shared/users\", ",
+									"        method: 'POST',",
+									"        header: {",
+									"            'content-type': 'application/json',",
+									"            'Authorization': \"Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvZnQvIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzQ3NDEwOTQsImlhdCI6MTcyNjEwMTA5NCwic2NvcGUiOiJhZG1pbiJ9.eBbccjOqaW7wYXURb_rDppsFimSXONchp6QKgZ1ZdqrsruLiAPlaCD22wfQh9Vv_AufzEEcMu_CK3owUqWxWlEMhlz4kiTgEsZsVadUiTByYCtf9vSYNvRU3F3roT6PJS-PQpxr3aehXZNBXL9Az3_UF2ofdxOtg13o2LRo_7aeZvnafClxBZu1nJS7Tpm-fRnKwVJTANUiO6S9urbeFPoiZrZBxlGs0lAgYFp1_OGE5rhAuq6oewPFR8TkwbM5bmv79roBnBWnXaoYTu5eM6FsfivwTyJvKof4iqDQJXOLQDXPpfIord4u5IIyVxsZCnCIeYYqwqM4kde4IAiQRlw\",",
+									"            'Accept': \"*/*\"",
+									"        }",
+									"    };",
+									"pm.sendRequest(getNewUser, function (err, response) {",
+									"    newUser = response.json();",
+									"",
+									"    // console.log(\"===== New User =======\");",
+									"    // console.log(\"oid = \"+ newUser.oid);",
+									"    // console.log(\"name = \"+ newUser.username);",
+									"    // console.log(\"password = \"+ newUser.password);",
+									"    // console.log(\"name = TMP \"+ newUser.username.substr(4));",
+									"    aMinute = 60 ;",
+									"    claim = {};",
+									"    claim.role = \"STUDENT\";",
+									"    claim.iss = \"https://intproj23.sit.kmutt.ac.th/xx/\"",
+									"    claim.sub = newUser.username;",
+									"    claim.oid = newUser.oid;",
+									"    claim.name = \"TMP \"+ newUser.username.substr(4);",
+									"    claim.username = newUser.username;",
+									"    claim.email = \"itbkk.\"+ newUser.username.substr(4)+ \"@ad.sit.kmutt.ac.th\";",
+									"    // claim.iat = Math.trunc(now.valueOf()/1000);",
+									"    // claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"    payload = JSON.stringify(claim);",
+									"    newUser.userName = newUser.username;",
+									"    pm.environment.set(\"tmp_user\",JSON.stringify(newUser));",
+									"    pm.environment.set(\"claims\", payload);",
+									"    console.log(claim);",
+									"    console.log(newUser);",
+									"});",
+									"// pm.request.body.raw = pm.environment.get(\"tmp_user\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{tmp_user}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create boards for tmp user with no body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index != userInfo.index) {",
+									"    index = userInfo.index;",
+									"}",
+									"index++;",
+									"pm.environment.set(\"iteration_status\", index);",
+									"",
+									"if(userInfo.isLastUser == true) {",
+									"    pm.environment.set(\"iteration_status\", -1);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));",
+									"",
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index == undefined) {",
+									"    index = 0;",
+									"    pm.environment.set(\"iteration_status\", index);",
+									"}",
+									"",
+									"userInfo = utils.getNextUser(users, index);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TMP_USER_ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create boards with name length exceeds limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TMP_USER_ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"Software Development Kanban Board for the course INT222 Integrated Project II at School of Information Technology in 2024\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create boards for tmp_user - Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"var responseJson = pm.response.json();",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(responseJson).to.be.an('object');",
+									"});",
+									"",
+									"// var responseText = pm.response.text().toLocaleLowerCase();",
+									"",
+									"console.log(pm.response)",
+									"pm.test(\"Expected Response - name(120), id(10)\", function () {",
+									"    pm.expect(responseJson).to.be.has.property(\"name\");",
+									"    pm.expect(responseJson.name).to.be.eq(\"Software Development Kanban Board for the course INT222 Integrated Project II at School of Information Technology in 202\");",
+									"    pm.expect(responseJson).to.be.have.property('id');",
+									"    pm.expect(responseJson.id.length).to.be.eq(10);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TMP_USER_ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"Software Development Kanban Board for the course INT222 Integrated Project II at School of Information Technology in 202\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get new boards with valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json array\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"ACTIVE_SECRET_KEY\", utils.selectSecretKey());",
+									"console.log(utils.selectSecretKey());",
+									"var now = Date.now();",
+									"aMinute = 60 ;",
+									"",
+									"claim = pbi18.getClaim();",
+									"claim.iat = Math.trunc(now.valueOf()/1000);",
+									"claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+									"payload = JSON.stringify(claim);",
+									"pm.environment.set(\"claims\", payload);",
+									"",
+									"// console.log(pm.environment.get(\"claims\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TMP_USER_ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsIm5hbWUiOiJJVEJLSyBTT01DSEFJIiwiaXNzIjoiaHR0cHM6Ly9pbnRwcm9qMjMuc2l0LmttdXR0LmFjLnRoL2Z0LyIsIm9pZCI6ImUzOTJhMWE0LTc3YTctNGJiNC04MzUzLTNjYzA1YWU2MWM0YiIsImVtYWlsIjoiaXRia2suc29tY2hhaUBhZC5zaXQua211dHQuYWMudGgiLCJzdWIiOiJpdGJray5zb21jaGFpIiwiaWF0IjoxNzI2MjkxNzI4LCJleHAiOjE3MjYyOTM1Mjh9.tIEthUMsgZJ_XwxHDf_R85nKpdg9oDsTKE-jrqyA3Gk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v3/boards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"claim = {};",
+							"User = {",
+							"    getNewTempUser : function() {",
+							"        const getNewUser = {",
+							"                url:  \"https://intproj23.sit.kmutt.ac.th/ft/shared/users\", ",
+							"                method: 'POST',",
+							"                header: {",
+							"                    'content-type': 'application/json',",
+							"                    'Authorization': \"Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2ludHByb2oyMy5zaXQua211dHQuYWMudGgvZnQvIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MzQ3NDEwOTQsImlhdCI6MTcyNjEwMTA5NCwic2NvcGUiOiJhZG1pbiJ9.eBbccjOqaW7wYXURb_rDppsFimSXONchp6QKgZ1ZdqrsruLiAPlaCD22wfQh9Vv_AufzEEcMu_CK3owUqWxWlEMhlz4kiTgEsZsVadUiTByYCtf9vSYNvRU3F3roT6PJS-PQpxr3aehXZNBXL9Az3_UF2ofdxOtg13o2LRo_7aeZvnafClxBZu1nJS7Tpm-fRnKwVJTANUiO6S9urbeFPoiZrZBxlGs0lAgYFp1_OGE5rhAuq6oewPFR8TkwbM5bmv79roBnBWnXaoYTu5eM6FsfivwTyJvKof4iqDQJXOLQDXPpfIord4u5IIyVxsZCnCIeYYqwqM4kde4IAiQRlw\",",
+							"                    'Accept': \"*/*\"",
+							"                }",
+							"            };",
+							"        pm.sendRequest(getNewUser, function (err, response) {",
+							"            newUser = response.json();",
+							"            aMinute = 60 ;",
+							"            claim.role = \"STUDEN\";",
+							"            claim.iss = \"https://intproj23.sit.kmutt.ac.th/xx/\"",
+							"            claim.sub = newUser.name;",
+							"            claim.oid = user.oid;",
+							"            claim.name = \"TMP \"+ newUser.substr();",
+							"            claim.iat = Math.trunc(now.valueOf()/1000);",
+							"            claim.exp = Math.trunc(now.valueOf()/1000) + 30*aMinute;",
+							"            payload = JSON.stringify(claim);",
+							"            pm.environment.set(\"claims\", payload);",
+							"",
+							"            console.log(\"---------------------\");",
+							"            console.log(newUser);",
+							"        });",
+							"    }",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "jwt",
+		"jwt": [
+			{
+				"key": "algorithm",
+				"value": "HS256",
+				"type": "string"
+			},
+			{
+				"key": "header",
+				"value": "{\n  \"typ\": \"JWT\",\n  \"alg\": \"HS256\"\n}",
+				"type": "string"
+			},
+			{
+				"key": "payload",
+				"value": "{{claims}}",
+				"type": "string"
+			},
+			{
+				"key": "isSecretBase64Encoded",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "secret",
+				"value": "{{ACTIVE_SECRET_KEY}}",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "headerPrefix",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "queryParamKey",
+				"value": "token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const CryptoJS = require('crypto-js');",
+					"utils = {",
+					"",
+					"    parseJwt : function (token,part) {",
+					"        var base64Url = token.split('.')[part];",
+					"        var words = CryptoJS.enc.Base64.parse(base64Url);",
+					"        var jsonPayload = CryptoJS.enc.Utf8.stringify(words);",
+					"        return  JSON.parse(jsonPayload);",
+					"    },",
+					"    getNextUser : function(users, i) {",
+					"        userInfo = {};",
+					"        userInfo.isLastUser = false;",
+					"        //have error from previous running",
+					"  ",
+					"        if (i < 0 || i >= users.length) {",
+					"            i = 0;",
+					"        } else if (i >= users.length-1) {",
+					"            userInfo.isLastUser = true;  ",
+					"        }",
+					"        userInfo.index = i;",
+					"        userInfo.user = users[i];",
+					"        // console.log(\"function-index: \"+ i);",
+					"        return userInfo;",
+					"    },",
+					"    selectSecretKey : function(option=true) {",
+					"        if(option) {",
+					"            return pm.environment.get(\"SECRET_KEY\");",
+					"        } else {",
+					"            return pm.environment.get(\"SECRET_KEY\").split(\"\").sort(() => 0.5 - Math.random()).join(\"\");",
+					"        }",
+					"",
+					"    },",
+					"    randomRole : function(roles) {",
+					"        var i = Math.floor(Math.random() * 1000)%roles.length;",
+					"        return roles[i];",
+					"    }",
+					"};",
+					"",
+					"",
+					"users = [",
+					"    {\"userName\" : \"itbkk.olarn\", \"password\" : \"ip23/OLA\"},",
+					"    {\"userName\" : \"itbkk.pichet\", \"password\" : \"ip23/PIC\"},",
+					"    // {\"userName\" : \"itbkk.siam\", \"password\" : \"ip23/SIA\"},",
+					"    // {\"userName\" : \"itbkk.sanit\", \"password\" : \"ip23/SAN\"},",
+					"    {\"userName\" : \"itbkk.kittiwut\", \"password\" : \"ip23/KIT\"},",
+					"    {\"userName\" : \"itbkk.somchai\", \"password\" : \"ip23/SOM\"},",
+					"    // {\"userName\" : \"itbkk.somkiat\", \"password\" : \"ip23/SOM\"},",
+					"    // {\"userName\" : \"itbkk.somsuan\", \"password\" : \"ip23/SOM\"}",
+					"];",
+					"",
+					"claims = [",
+					"    { \"role\": \"LECTURER\",\"name\": \"ITBKK OLA\", \"sub\": \"itbkk.olarn\",",
+					"      \"iss\": \"https://intproj23.sit.kmutt.ac.th/ft/\", \"oid\": \"2b2f94fd-68be-4ff2-8c67-cb35e139f6fb\",",
+					"      \"email\": \"itbkk.olarn@ad.sit.kmutt.ac.th\"",
+					"    },",
+					"    { \"role\": \"LECTURER\",\"name\": \"ITBKK PIC\", \"sub\": \"itbkk.pichet\",",
+					"      \"iss\": \"https://intproj23.sit.kmutt.ac.th/ft/\", \"oid\": \"0712334f-4982-4d26-a7ef-4ad0ff53cb18\",",
+					"      \"email\": \"itbkk.pichet@ad.sit.kmutt.ac.th\"",
+					"    },",
+					"    { \"role\": \"STAFF\",\"name\": \"ITBKK KIT\", \"sub\": \"itbkk.kittiwut\",",
+					"      \"iss\": \"https://intproj23.sit.kmutt.ac.th/ft/\", \"oid\": \"aae33b35-a42f-4791-996c-65988e8eefc4\",",
+					"      \"email\": \"itbkk.kittiwut@ad.sit.kmutt.ac.th\"",
+					"    },",
+					"    { \"role\": \"STUDENT\",\"name\": \"ITBKK SOM\", \"sub\": \"itbkk.somchai\",",
+					"      \"iss\": \"https://intproj23.sit.kmutt.ac.th/ft/\", \"oid\": \"e392a1a4-77a7-4bb4-8353-3cc05ae61c4b\",",
+					"      \"email\": \"itbkk.somchai@ad.sit.kmutt.ac.th\"",
+					"    }",
+					"]",
+					"",
+					"roles = [\"ADMIN\", \"ADMINISTRATOR\", \"MANAGER\", \"ROOT\"",
+					", \"MODULATOR\", \"OWNER\", \"AUTHOR\", \"MEMBER\", \"SUBSCRIBER\"];",
+					"",
+					"pbi18 = {",
+					"    getClaim : function () {",
+					"        var index = pm.environment.get(\"iteration_status\");",
+					"        if(index < 0) {",
+					"            return claims[claims.length-1];",
+					"        } else if (index == 0) {",
+					"            return claims[0];",
+					"        } else if (index <= claims.length) {",
+					"            return claims[index-1];",
+					"        } else {",
+					"            return claims[0];",
+					"        }",
+					"    }",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Using baseUrl, Run at: \"+ Date(),function() {",
+					"    pm.expect(pm.request.url.toString()).to.be.contains(pm.environment.get(\"baseUrl\"));",
+					"});"
+				]
+			}
+		}
+	]
+}

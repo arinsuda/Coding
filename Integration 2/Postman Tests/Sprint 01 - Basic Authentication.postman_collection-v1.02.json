@@ -1,0 +1,784 @@
+{
+	"info": {
+		"_postman_id": "662b09a9-3bcd-4c4a-bc25-d949c9293943",
+		"name": "Sprint 01 - Basic Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6637675"
+	},
+	"item": [
+		{
+			"name": "PBI15 - Match Password",
+			"item": [
+				{
+					"name": "Check Response with Valid User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index == undefined) {",
+									"    index = 0;",
+									"    pm.environment.set(\"iteration_status\", index);",
+									"}",
+									"",
+									"userInfo = utils.getNextUser(users, index);",
+									"body_str = JSON.stringify(userInfo.user);",
+									"",
+									"pm.request.body.raw = body_str;",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200 - User: \"+ userInfo.user.userName, function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"console.log(userInfo);",
+									"",
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index != userInfo.index) {",
+									"    index = userInfo.index;",
+									"}",
+									"index++;",
+									"pm.environment.set(\"iteration_status\", index);",
+									"",
+									"if(userInfo.isLastUser == true) {",
+									"    pm.environment.set(\"iteration_status\", -1);",
+									"    pm.execution.setNextRequest(\"Check Response with NOT Existing User\");",
+									"} else {",
+									"    pm.execution.setNextRequest(\"Check Response with Valid User\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response with NOT Existing User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									"",
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"console.log(pm.response)",
+									"pm.test(\"Expected Response Message\", function () {",
+									"   pm.expect(error).to.be.contain(\"user\");",
+									"   pm.expect(error).to.be.contain('incorrect');",
+									"   pm.expect(error).to.be.contain(\"password\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"user = {};",
+									"user.userName = \"itbkk.somsak\";",
+									"user.password = \"ip23/SOM\";",
+									"",
+									"body_str = JSON.stringify(user);",
+									"",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response with Incorrect Password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"user = {};",
+									"user.userName = \"itbkk.olarn\";",
+									"user.password = \"ip23/SOM\";",
+									"body_str = JSON.stringify(user);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"console.log(pm.response);",
+									"",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// Validate that the response is json object",
+									"pm.test(\"Response is a json object\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Expected Response Message\", function () {",
+									"   pm.expect(error).to.be.contain('incorrect');",
+									"   pm.expect(error).to.be.contain(\"user\");",
+									"   pm.expect(error).to.be.contain(\"password\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"users = [",
+							"    // {\"userName\" : \"itbkk.olarn\", \"password\" : \"ip23/OLA\"},",
+							"    // {\"userName\" : \"itbkk.pichet\", \"password\" : \"ip23/PIC\"},",
+							"    // {\"userName\" : \"itbkk.siam\", \"password\" : \"ip23/SIA\"},",
+							"    {\"userName\" : \"itbkk.sanit\", \"password\" : \"ip23/SAN\"},",
+							"    {\"userName\" : \"itbkk.kittiwut\", \"password\" : \"ip23/KIT\"},",
+							"    // {\"userName\" : \"itbkk.somchai\", \"password\" : \"ip23/SOM\"},",
+							"    // {\"userName\" : \"itbkk.somkiat\", \"password\" : \"ip23/SOM\"},",
+							"    {\"userName\" : \"itbkk.somsuan\", \"password\" : \"ip23/SOM\"}",
+							"];",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PBI16 - Validate Match Password",
+			"item": [
+				{
+					"name": "Check Response with Null userName/password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// var user = JSON.parse(pm.environment.get(\"user\"));",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"",
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response with invalid fields\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(error).to.contain.oneOf(['empty', 'null', 'blank']);",
+									"    pm.expect(error).to.be.contain('not');",
+									"    pm.expect(error).to.be.contain('username');",
+									"    pm.expect(error).to.be.contain('password');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"body_str = JSON.stringify(users[0]);",
+									"pm.request.body.raw = body_str;",
+									"",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response with Empty userName/password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"// var user = JSON.parse(pm.environment.get(\"user\"));",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response with invalid fields\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(error).to.contain.oneOf(['empty', 'null', 'blank']);",
+									"    pm.expect(error).to.be.contain('not');",
+									"    pm.expect(error).to.be.contain('username');",
+									"    pm.expect(error).to.be.contain('password');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"body_str = JSON.stringify(users[1]);",
+									"pm.request.body.raw = body_str;",
+									"",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response for white-space and max-length userName/password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"pm.test(\"Request user with max field length\", function () {",
+									"    pm.expect(user.userName.length).to.be.eq(USERNAME_MAX_LENGTH);",
+									"    pm.expect(user.password.length).to.be.eq(PW_MAX_LENGTH);",
+									"});",
+									"",
+									"pm.test(\"Response with no invalid fields\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(error).to.be.contain('incorrect');",
+									"    pm.expect(error).to.be.contain('username');",
+									"    pm.expect(error).to.be.contain('password');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"user = users[2];",
+									"body_str = JSON.stringify(user);",
+									"pm.request.body.raw = body_str;",
+									"",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response with Correct User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"var error = pm.response.text().toLocaleLowerCase();",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200 - User: \"+ user.userName, function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response with no invalid fields\", function () {",
+									"    pm.expect(jsonData).to.not.have.property('message');",
+									"    pm.expect(error).to.be.not.contain('incorrect');",
+									"    pm.expect(error).to.be.not.contain('username');",
+									"    pm.expect(error).to.be.not.contain('password');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"user = users[3];",
+									"body_str = JSON.stringify(user);",
+									"pm.request.body.raw = body_str;",
+									"",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"users = [",
+							"    {\"userName\" : null, \"password\" : null},",
+							"    {\"userName\" : \"\", \"password\" : \"\"},",
+							"    {\"userName\" : \"   itbkk.somsuan - itbkk.somsuan - itbkk.somsuan  \", \"password\" : \"   ip23/SOM   \"},",
+							"    {\"userName\" : \"itbkk.pichet\", \"password\" : \"ip23/PIC\"}",
+							"];",
+							"USERNAME_MAX_LENGTH=50;",
+							"PW_MAX_LENGTH=14;"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PBI17 - Authentication with JWT Tokens",
+			"item": [
+				{
+					"name": "Check Response with access-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData);",
+									"",
+									"var jwtInfo ={};",
+									"jwtInfo.size = jsonData.access_token.length;",
+									"jwtInfo.header = utils.parseJwt(jsonData.access_token,0);",
+									"jwtInfo.payload = utils.parseJwt(jsonData.access_token,1);",
+									"// jwtInfo.signature = jsonData.access_token.split('.')[2];",
+									"jwtInfo.expires = ((jwtInfo.payload.exp-Date.now().valueOf()/1000)/60);",
+									"console.log(jwtInfo);",
+									"// Validate that the response code should be 200",
+									"pm.test(\"Status code is 200 - User: \"+ userInfo.user.userName, function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response with JWT Token - \"+ jwtInfo.size, function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.expect(jwtInfo.size).to.be.gt(MIN_TOKEN_LENGTH);  ",
+									"});",
+									"pm.test(\"Required JWT Token Header & Payload\", function () {",
+									"    pm.expect(jwtInfo.header.typ).to.be.eqls(\"JWT\");",
+									"    pm.expect(jwtInfo.header.alg).to.be.include.oneOf(SIGNATURE_ALGORITHMS);",
+									"     pm.expect(jwtInfo.header.alg).to.be.include.oneOf(SIGNATURE_BITS);",
+									"    pm.expect(jwtInfo.payload.role).to.be.eqls(userInfo.user.role);",
+									"    pm.expect(jwtInfo.payload).to.have.property(\"oid\");",
+									"    pm.expect(jwtInfo.payload.email).to.be.eqls(userInfo.user.email);",
+									"    pm.expect(jwtInfo.payload.name).to.be.eqls(userInfo.user.name);",
+									"    pm.expect(jwtInfo.expires).to.be.above(MIN_TOKEN_TIME_LEFT);",
+									"    pm.expect(jwtInfo.expires).to.be.below(MAX_TOKEN_TIME_LIFE);",
+									"    if (group != 'unknow') {",
+									"        pm.expect(jwtInfo.payload.iss).to.be.contain(group);",
+									"    } else {",
+									"        pm.expect(jwtInfo.payload.iss).to.be.contain('intproj23.sit.kmutt.ac.th');",
+									"    }   ",
+									"});",
+									"",
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index != userInfo.index) {",
+									"    index = userInfo.index;",
+									"}",
+									"index++;",
+									"pm.environment.set(\"iteration_status\", index);",
+									"",
+									"if(userInfo.isLastUser == true) {",
+									"    pm.environment.set(\"iteration_status\", -1);",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    pm.execution.setNextRequest(\"Check Response with access-token\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var index = pm.environment.get(\"iteration_status\");",
+									"if(index == undefined) {",
+									"    index = 0;",
+									"    pm.environment.set(\"iteration_status\", index);",
+									"}",
+									"",
+									"userInfo = utils.getNextUser(users, index);",
+									"body_str = JSON.stringify(userInfo.user);",
+									"pm.request.body.raw = body_str;",
+									"",
+									"var testUrl = pm.environment.get(\"baseUrl\");",
+									"group = \"unknow\";",
+									"if (testUrl.search(\"localhost\")<0) {",
+									"    testUrl = testUrl.replaceAll(\"//\",\"\\\\\");",
+									"    testUrl = testUrl.replaceAll(\"/\",\"|\");",
+									"    group = testUrl.split(\"|\")[1];",
+									"    testUrl = testUrl.replaceAll(\"\\\\\",\"//\");",
+									"}",
+									"SIGNATURE_ALGORITHMS = ['HS', 'RS', 'ES', 'PS'];",
+									"SIGNATURE_BITS = ['256', '384', '512'];",
+									"",
+									"console.log(\"Group : \"+ group + \" --> \"+ testUrl);",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"users = [",
+							"    {\"userName\" : \"itbkk.siam\", \"password\" : \"ip23/SIA\", \"role\" : \"LECTURER\", \"email\" : \"itbkk.siam@ad.sit.kmutt.ac.th\", \"name\" : \"ITBKK SIAM\"},",
+							"    {\"userName\" : \"itbkk.kittiwut\", \"password\" : \"ip23/KIT\", \"role\" : \"STAFF\", \"email\" : \"itbkk.kittiwut@ad.sit.kmutt.ac.th\", \"name\" : \"ITBKK KITTIWUT\"},",
+							"    {\"userName\" : \"itbkk.somsuan\", \"password\" : \"ip23/SOM\", \"role\" : \"STUDENT\", \"email\" :\"itbkk.somsuan@ad.sit.kmutt.ac.th\", \"name\" : \"ITBKK SOMSUAN\"}",
+							"];",
+							"MIN_TOKEN_LENGTH = 320;",
+							"MIN_TOKEN_TIME_LEFT=28.0",
+							"MAX_TOKEN_TIME_LIFE=31.0"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const CryptoJS = require('crypto-js');",
+					"utils = {",
+					"",
+					"    parseJwt : function (token,part) {",
+					"        var base64Url = token.split('.')[part];",
+					"        var words = CryptoJS.enc.Base64.parse(base64Url);",
+					"        var jsonPayload = CryptoJS.enc.Utf8.stringify(words);",
+					"        return  JSON.parse(jsonPayload);",
+					"    },",
+					"",
+					"    // getIterationStatus : function() {",
+					"    //     var index = pm.environment.get(\"iteration_status\");",
+					"    //     return index;",
+					"    // },",
+					"",
+					"    // setNextIterationStatus : function() {",
+					"    //     var index = this.getIterationStatus();",
+					"    //     index++;",
+					"    //     pm.environment.set(\"iteration_status\", index);",
+					"    // },",
+					"",
+					"    getNextUser : function(users, i) {",
+					"        userInfo = {};",
+					"        userInfo.isLastUser = false;",
+					"        //have error from previous running",
+					"  ",
+					"        if (i < 0 || i >= users.length) {",
+					"            i = 0;",
+					"        } else if (i >= users.length-1) {",
+					"            userInfo.isLastUser = true;  ",
+					"        }",
+					"        userInfo.index = i;",
+					"        userInfo.user = users[i];",
+					"        // console.log(\"function-index: \"+ i);",
+					"        return userInfo;",
+					"    }",
+					"};"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Using baseUrl, Run at: \"+ Date(),function() {",
+					"    pm.expect(pm.request.url.toString()).to.be.contains(pm.environment.get(\"baseUrl\"));",
+					"});"
+				]
+			}
+		}
+	]
+}

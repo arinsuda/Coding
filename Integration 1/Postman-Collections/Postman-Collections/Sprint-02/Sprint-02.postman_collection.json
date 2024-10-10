@@ -1,0 +1,713 @@
+{
+	"info": {
+		"_postman_id": "0df17c54-04d7-445f-99d1-f3f553160e05",
+		"name": "Sprint-02",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6637675",
+		"_collection_link": "https://grey-eclipse-546952.postman.co/workspace/INT211-Workspace~09b1369a-5418-4136-a772-898b7bfd1b09/collection/6637675-0df17c54-04d7-445f-99d1-f3f553160e05?action=share&source=collection_link&creator=6637675"
+	},
+	"item": [
+		{
+			"name": "PBI-3 ADD-TASK-BASIC",
+			"item": [
+				{
+					"name": "with invalid field constraints",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.request.body);",
+									"pm.test(\"The http status should be 400 or 500 (received: \"+ pm.response.code+\")\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400,500,422]);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//pm.environment.set(\"task_title\", pm.variables.replaceIn('{{$randomCatchPhrase}}'));",
+									"var body = {",
+									"    'title': null,",
+									"    'description': null,",
+									"    'assignees': null,",
+									"    'status': null",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"pm.request.body.raw = body_str;",
+									"// console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "with title only (another fields are null)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add task Successful status code must be 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"pm.test(\"The expected return task attributes/values\", function () {",
+									"     pm.expect(task).to.be.an('object');",
+									"     pm.expect(task).to.have.property('id');",
+									"     pm.expect(task).to.have.property('title');",
+									"     pm.expect(task).to.have.property('description');",
+									"     pm.expect(task).to.have.property('assignees');",
+									"     pm.expect(task).to.have.property('status');",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks/'+task.id, (error, response) => {",
+									"  if (error) {",
+									"    console.log(error);",
+									"  }",
+									"  newTask = response.json();",
+									"  console.log(newTask);",
+									"  pm.test('Get a task which added by id', () => {",
+									"    pm.expect(newTask.id).to.be.eq(task.id);",
+									"    pm.expect(newTask.title).to.be.eq(pm.environment.get(\"task_title\"));",
+									"    pm.expect(newTask.description).to.be.eq(pm.environment.get(\"task_description\"));",
+									"    pm.expect(newTask.assignees).to.be.eq(pm.environment.get(\"task_assignees\"));",
+									"    pm.expect(newTask.status).to.be.eq(\"NO_STATUS\");",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"task_title\", pm.variables.replaceIn('{{$randomCatchPhrase}}'));",
+									"pm.environment.set(\"task_description\", pm.variables.replaceIn(null));",
+									"pm.environment.set(\"task_assignees\", pm.variables.replaceIn(null));",
+									"pm.environment.set(\"task_status\", pm.variables.replaceIn(null));",
+									"",
+									"var body = {",
+									"    'title': '',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status': ''",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.title = pm.environment.get(\"task_title\");",
+									"task.description = pm.environment.get(\"task_description\");",
+									"task.assignees = pm.environment.get(\"task_assignees\");",
+									"task.status = pm.environment.get(\"task_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									" console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "with maximum length of each field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"REQUEST BODY: \"+ pm.request.body);",
+									"",
+									"pm.test(\"Add task Successful status code must be 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks/'+task.id, (error, response) => {",
+									"  if (error) {",
+									"    console.log(error);",
+									"  }",
+									"  newTask = response.json();",
+									"  console.log(newTask);",
+									"  pm.test('Get a task which added by id', () => {",
+									"    pm.expect(newTask.id).to.be.eq(task.id);",
+									"    pm.expect(newTask.title).to.be.eq(pm.environment.get(\"task_title\"));",
+									"    pm.expect(newTask.description).to.be.eq(pm.environment.get(\"task_description\"));",
+									"    pm.expect(newTask.assignees).to.be.eq(pm.environment.get(\"task_assignees\"));",
+									"    pm.expect(newTask.status).to.be.eq(pm.environment.get(\"task_status\"));",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"task_title\", pm.variables.replaceIn('DevSecOps1DevSecOps2DevSecOps3DevSecOps4DevSecOps5DevSecOps6DevSecOps7DevSecOps8DevSecOps9DevSecOps0'));",
+									"pm.environment.set(\"task_description\", pm.variables.replaceIn('Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti1Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti2Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti3Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti4Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti5'));",
+									"pm.environment.set(\"task_assignees\", pm.variables.replaceIn('Assignees1Assignees2Assignees3'));",
+									"pm.environment.set(\"task_status\", pm.variables.replaceIn('TO_DO'));",
+									"",
+									"var body = {",
+									"    'title': '',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status': ''",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.title = pm.environment.get(\"task_title\");",
+									"task.description = pm.environment.get(\"task_description\");",
+									"task.assignees = pm.environment.get(\"task_assignees\");",
+									"task.status = pm.environment.get(\"task_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "with leading/trailing spaces",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"REQUEST BODY: \"+ pm.request.body);",
+									"",
+									"pm.test(\"Add task Successful status code must be 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks/'+task.id, (error, response) => {",
+									"  if (error) {",
+									"    console.log(error);",
+									"  }",
+									"  newTask = response.json();",
+									"  console.log(newTask);",
+									"  pm.test('Get a task which added by id then check trimmings leading/trailing spaces', () => {",
+									"    pm.expect(newTask.id).to.be.eq(task.id);",
+									"    pm.expect(newTask.title).to.be.eq(pm.environment.get(\"task_title\").trim());",
+									"    pm.expect(newTask.description).to.be.eq(pm.environment.get(\"task_description\").trim());",
+									"    pm.expect(newTask.assignees).to.be.eq(pm.environment.get(\"task_assignees\").trim());",
+									"    pm.expect(newTask.status).to.be.eq(pm.environment.get(\"task_status\"));",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"task_title\", pm.variables.replaceIn('     _Front End_     '));",
+									"pm.environment.set(\"task_description\", pm.variables.replaceIn('     _fix CSS on landing page_     '));",
+									"pm.environment.set(\"task_assignees\", pm.variables.replaceIn('     _ปุยฝ้าย กับ เสือดาว_     '));",
+									"pm.environment.set(\"task_status\", pm.variables.replaceIn('DONE'));",
+									"",
+									"var body = {",
+									"    'title': '',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status': ''",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.title = pm.environment.get(\"task_title\");",
+									"task.description = pm.environment.get(\"task_description\");",
+									"task.assignees = pm.environment.get(\"task_assignees\");",
+									"task.status = pm.environment.get(\"task_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PBI-4 EDIT-TASK-BASIC",
+			"item": [
+				{
+					"name": "to update task by id - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"REQUEST BODY: \"+ pm.request.body);",
+									"",
+									"pm.test(\"Update with doesn't existing task id '\"+ pm.environment.get(\"task_id\") +\"', the expected status code must be 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(404);",
+									"});",
+									"",
+									"",
+									" pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks', (error, response) => {",
+									"    if (error) {",
+									"        console.log(error);",
+									"    }",
+									"    var tasks = response.json();",
+									"    taskIdToBeupdate = tasks[tasks.length-1].id;",
+									"    pm.environment.set(\"task_id\", taskIdToBeupdate);",
+									"    console.log(taskIdToBeupdate);",
+									" });",
+									" "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"var randomId = parseInt(Math.random()*100 + 99);",
+									"pm.environment.set(\"task_id\", randomId);",
+									"pm.environment.set(\"task_title\", pm.variables.replaceIn('  '+ '{{$randomCatchPhrase}}' + '   '));",
+									"pm.environment.set(\"task_description\", pm.variables.replaceIn('  '+ '{{$randomCatchPhrase}}' + '   '));",
+									"pm.environment.set(\"task_assignees\", pm.variables.replaceIn('  '+ '{{$randomFullName}}' + '   '));",
+									"pm.environment.set(\"task_status\", pm.variables.replaceIn('DOING'));",
+									"",
+									"var body = {",
+									"    'title': '',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status': ''",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.title = pm.environment.get(\"task_title\");",
+									"task.description = pm.environment.get(\"task_description\");",
+									"task.assignees = pm.environment.get(\"task_assignees\");",
+									"task.status = pm.environment.get(\"task_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"{{task_id}}"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "to update task by id - Normal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"REQUEST BODY: \"+ pm.request.body);",
+									"",
+									"pm.test(\"The expected status code for update task by id '\"+ pm.environment.get(\"task_id\")+\"' should be 200\" , function () {",
+									"    pm.expect(pm.response.code).to.be.eq(200);",
+									"});",
+									"",
+									"var task = pm.response.json();",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks/'+task.id, (error, response) => {",
+									"  if (error) {",
+									"    console.log(error);",
+									"  }",
+									"  updatedTask = response.json();",
+									"  console.log(updatedTask);",
+									"  pm.test('Get a updated task by id then check updated field and trimmings leading/trailing spaces', () => {",
+									"    pm.expect(updatedTask.id).to.be.eq(task.id);",
+									"    pm.expect(updatedTask.title).to.be.eq(pm.environment.get(\"task_title\").trim());",
+									"    pm.expect(updatedTask.description).to.be.eq(pm.environment.get(\"task_description\").trim());",
+									"    pm.expect(updatedTask.assignees).to.be.eq(pm.environment.get(\"task_assignees\").trim());",
+									"    pm.expect(updatedTask.status).to.be.eq(pm.environment.get(\"task_status\"));",
+									"  });",
+									"  pm.test('The expected updatedOn is reasonable (less than 10 second(s))', () => {",
+									"    const moment = require('moment');",
+									"    let now = moment(new Date());",
+									"    let duration = moment.duration(now.diff(updatedTask.updatedOn)).asSeconds();",
+									"    pm.expect(duration).to.be.lte(10.0);",
+									"    console.log(now.toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"}) + \" - \" + moment(updatedTask.updatedOn).toLocaleString(\"en-UK\", {timeZone: \"Asia/Bangkok\"}) + \" = \" + duration);",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"task_title\", pm.variables.replaceIn('  '+ '{{$randomCatchPhrase}}' + '   '));",
+									"pm.environment.set(\"task_description\", pm.variables.replaceIn('  '+ '{{$randomCatchPhrase}}' + '   '));",
+									"pm.environment.set(\"task_assignees\", pm.variables.replaceIn('  '+ '{{$randomFullName}}' + '   '));",
+									"pm.environment.set(\"task_status\", pm.variables.replaceIn('DOING'));",
+									"",
+									"var body = {",
+									"    'title': '',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status': ''",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.title = pm.environment.get(\"task_title\");",
+									"task.description = pm.environment.get(\"task_description\");",
+									"task.assignees = pm.environment.get(\"task_assignees\");",
+									"task.status = pm.environment.get(\"task_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"{{task_id}}"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PBI-5 DELETE-TASK",
+			"item": [
+				{
+					"name": "remove by task id - Normal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"The successful DELETE request should be 200, 202 or 204\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks/'+pm.environment.get(\"task_id\"), (error, response) => {",
+									"  if (error) {",
+									"    console.log(error);",
+									"  }",
+									"",
+									"  pm.test('The status code when try to get deleted task must be 404', () => {",
+									"    pm.expect(response.code).to.be.eq(404);",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.sendRequest(pm.environment.get(\"base_url\")+'/v1/tasks', (error, response) => {",
+									"    if (error) {",
+									"        console.log(error);",
+									"    }",
+									"    var tasks = response.json();",
+									"    if(tasks.length>3) {",
+									"        taskIdToBedelete = tasks[tasks.length-3].id;",
+									"    } else {",
+									"        taskIdToBedelete = tasks[0].id;",
+									"    }",
+									"    ",
+									"    pm.environment.set(\"task_id\", taskIdToBedelete);",
+									"    console.log(taskIdToBedelete);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"{{task_id}}"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "remove by task id - Not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"The request status for request to delete the previous id should be 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/tasks/{{task_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								"{{task_id}}"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "request_body",
+			"value": ""
+		}
+	]
+}

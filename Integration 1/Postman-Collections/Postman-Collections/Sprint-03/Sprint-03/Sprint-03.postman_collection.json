@@ -1,0 +1,1172 @@
+{
+	"info": {
+		"_postman_id": "101ed79c-a53e-498c-913b-dd9193bf3681",
+		"name": "Sprint-03",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6637675",
+		"_collection_link": "https://grey-eclipse-546952.postman.co/workspace/INT211-Workspace~09b1369a-5418-4136-a772-898b7bfd1b09/collection/6637675-101ed79c-a53e-498c-913b-dd9193bf3681?action=share&source=collection_link&creator=6637675"
+	},
+	"item": [
+		{
+			"name": "PBI-6 ADD-STATUS",
+			"item": [
+				{
+					"name": "add new status with no description",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'name': 'Waiting',",
+									"    'description': null,",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"",
+									"pm.environment.set(\"status\", body_str);",
+									"body_str = JSON.stringify(status);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add task Successful status code must be 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var status = pm.response.json();",
+									"if(pm.response.code===201) {",
+									"    pm.environment.set(\"waiting_status\", status.id);",
+									"}",
+									"pm.test(\"The expected return status attributes\", function () {",
+									"     pm.expect(status).to.be.an('object');",
+									"     pm.expect(status).to.have.property('id');",
+									"     pm.expect(status).to.have.property('name');",
+									"     pm.expect(status).to.have.property('description');",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+status.id, (error, response) => {",
+									"",
+									"    newStatus = response.json();",
+									"    refStatus = JSON.parse(pm.environment.get(\"status\"));",
+									"",
+									"    console.log(\"new status:\");",
+									"    console.log(newStatus);",
+									"    console.log(\"ref status:\");",
+									"    console.log(refStatus);",
+									"",
+									"    pm.test('Get a task which added by id', () => {",
+									"        pm.expect(newStatus.id).to.be.eq(status.id);",
+									"        pm.expect(newStatus.name).to.be.eq(refStatus.name);",
+									"        pm.expect(newStatus.description).to.be.eq(refStatus.description);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add new status with max field size, all fields with leading and trailing whitespace",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'name': '   Maximum001Maximum002Maximum003Maximum004Maximum005     ',",
+									"    'description': ' Maximum001Maximum002Maximum003Maximum004Maximum005Maximum006Maximum007Maximum008Maximum009Maximum100Maximum001Maximum002Maximum003Maximum004Maximum005Maximum006Maximum007Maximum008Maximum009Maximum200    '",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"",
+									"pm.environment.set(\"status\", body_str);",
+									"body_str = JSON.stringify(status);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add task Successful status code must be 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var status = pm.response.json();",
+									"if(pm.response.code===201) {",
+									"    pm.environment.set(\"max_status\", status.id);",
+									"}",
+									"pm.test(\"The expected return status attributes\", function () {",
+									"     pm.expect(status).to.be.an('object');",
+									"     pm.expect(status).to.have.property('id');",
+									"     pm.expect(status).to.have.property('name');",
+									"     pm.expect(status).to.have.property('description');",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+status.id, (error, response) => {",
+									"",
+									"    newStatus = response.json();",
+									"    refStatus = JSON.parse(pm.environment.get(\"status\"));",
+									"",
+									"    console.log(\"new status:\");",
+									"    console.log(newStatus);",
+									"    console.log(\"ref status:\");",
+									"    console.log(refStatus);",
+									"",
+									"    pm.test('Get a task which added by id', () => {",
+									"        pm.expect(newStatus.id).to.be.eq(status.id);",
+									"        pm.expect(newStatus.name).to.be.eq(refStatus.name.trim());",
+									"        pm.expect(newStatus.description).to.be.eq(refStatus.description.trim());",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add status with null status name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'name': null,",
+									"    'description': 'No Name',",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"",
+									"pm.environment.set(\"status\", body_str);",
+									"body_str = JSON.stringify(status);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Status Failed http-status-code must be 400, 422 or 500\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 500, 422]);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add duplicated status name (upper case + leading/trailing space)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'name': '  NO STATUS   ',",
+									"    'description': 'No Name',",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"",
+									"pm.environment.set(\"status\", body_str);",
+									"body_str = JSON.stringify(status);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Status Failed http-status-code must be 400, 422 or 500\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 500, 422]);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses', (error, response) => {",
+									"    allStatuses = response.json();",
+									"    refStatus = JSON.parse(pm.environment.get(\"status\"));",
+									"    var count = 0;",
+									"    allStatuses.forEach((status, index) => {",
+									"        if(status.name.trim().toLowerCase() === refStatus.name.toLowerCase().trim()) {",
+									"            count++;",
+									"            if(count>1) {",
+									"                console.log(\"duplicated status: '\"+ status.name+ \"'\");",
+									"            }",
+									"        }",
+									"    });",
+									"    pm.test(\"Test duplicated status name\", function () {",
+									"        pm.expect(count).to.be.eq(1);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PBI-6 ADD-TASK-WITH-DEFAULT/NEW-STATUS",
+			"item": [
+				{
+					"name": "add task with status 1 (No Status)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'title': 'Task Title...',",
+									"    'description': '',",
+									"    'assignees': '',",
+									"    'status' : 1",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"pm.environment.set(\"task\", body_str);",
+									"body_str = JSON.stringify(task);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Task Successful http-status-code must 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/tasks/'+ task.id, (error, response) => {",
+									"    newTask = response.json();",
+									"    console.log(newTask);",
+									"    refTask = JSON.parse(pm.environment.get(\"task\"));",
+									"    console.log(task);",
+									"    if (typeof(newTask.status)===\"object\") {",
+									"        pm.test(\"he expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"no status\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    } else {",
+									"            pm.test(\"The expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"no status\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add task title 'Repository with status {{waiting_status}}",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'title': 'Repository',",
+									"    'description': '',",
+									"    'assignees': null,",
+									"    'status' : 0",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.status = pm.environment.get(\"waiting_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.environment.set(\"task\", body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Task Successful http-status-code must 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/tasks/'+ task.id, (error, response) => {",
+									"    newTask = response.json();",
+									"    console.log(newTask);",
+									"    refTask = JSON.parse(pm.environment.get(\"task\"));",
+									"    console.log(task);",
+									"    if (typeof(newTask.status)===\"object\") {",
+									"        pm.test(\"he expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"waiting\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    } else {",
+									"            pm.test(\"The expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"waiting\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add task title 'ดาต้าเบส' with status {{waiting_status}}",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'title': 'ดาต้าเบส',",
+									"    'description': null,",
+									"    'assignees': '',",
+									"    'status' : 0",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"task.status = pm.environment.get(\"waiting_status\");",
+									"body_str = JSON.stringify(task);",
+									"pm.environment.set(\"task\", body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Task Successful http-status-code must 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(201);",
+									"});",
+									"var task = pm.response.json();",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/tasks/'+ task.id, (error, response) => {",
+									"    newTask = response.json();",
+									"    console.log(newTask);",
+									"    refTask = JSON.parse(pm.environment.get(\"task\"));",
+									"    console.log(task);",
+									"    if (typeof(newTask.status)===\"object\") {",
+									"        pm.test(\"he expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"waiting\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    } else {",
+									"            pm.test(\"The expect status is 'No Status'\", function () {",
+									"            pm.expect(newTask.id).to.be.eq(task.id);",
+									"            pm.expect(newTask.title).to.be.eq(refTask.title);",
+									"            pm.expect(newTask.description).to.be.eq(null);",
+									"            pm.expect(newTask.status.name.toLowerCase()).to.be.eq(\"waiting\");",
+									"            pm.expect(newTask.assignees).to.be.eq(null);",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add task with status code 999",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body = {",
+									"    'title': 'New Task with not existing status id',",
+									"    'description': 'Will not added',",
+									"    'assignees': 'Somchai',",
+									"    'status' : 999",
+									"}",
+									"var body_str = JSON.stringify(body); ",
+									"task = JSON.parse(body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Add Task with not existing status id,  http-status-code must 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(404);",
+									"});",
+									"var newTask = pm.response.json();",
+									"console.log(newTask);",
+									"pm.test(\"The body of response not contain task attributes\", function () {",
+									"    pm.expect(newTask).to.not.have.property(\"id\");",
+									"    pm.expect(newTask).to.not.have.property(\"title\");",
+									"    pm.expect(newTask).to.not.have.property(\"assignees\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PBI-7 EDIT-STATUS",
+			"item": [
+				{
+					"name": "edit statusName and statusDescription with leading/trailing white space",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =     {",
+									"        \"id\": 0,",
+									"        \"name\": \"   _Dropped_   \",",
+									"        \"description\": \"   _Tasks are no longer needed_   \"",
+									"    }",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"status.id = pm.environment.get(\"waiting_status\");",
+									"body_str = JSON.stringify(status);",
+									"pm.environment.set(\"editing_status\", body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update Staus Successful http-status-code must 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(200);",
+									"});",
+									"var status = pm.response.json();",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+ status.id, (error, response) => {",
+									"    updatedTask = response.json();",
+									"    console.log(updatedTask);",
+									"    refStatus = JSON.parse(pm.environment.get(\"editing_status\"));",
+									"    console.log(status);",
+									"   ",
+									"    pm.test('The expected updated status attributes/values', () => {",
+									"        pm.expect(updatedTask.id).to.be.eq(status.id);",
+									"        pm.expect(updatedTask.name).to.be.eq(refStatus.name.trim());",
+									"        pm.expect(updatedTask.description).to.be.eq(refStatus.description.trim());",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/{{waiting_status}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"{{waiting_status}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit statusDescription only",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =     {",
+									"        \"id\": 0,",
+									"        \"name\": \"Maximum001Maximum002Maximum003Maximum004Maximum005\",",
+									"        \"description\": null",
+									"    }",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"status.id = pm.environment.get(\"max_status\");",
+									"body_str = JSON.stringify(status);",
+									"pm.environment.set(\"editing_status\", body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update Status Successful http-status-code must 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(200);",
+									"});",
+									"var status = pm.response.json();",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+ status.id, (error, response) => {",
+									"    updatedTask = response.json();",
+									"    console.log(updatedTask);",
+									"    refStatus = JSON.parse(pm.environment.get(\"editing_status\"));",
+									"    console.log(status);",
+									"   ",
+									"    pm.test('The expected updated status attributes/values', () => {",
+									"        pm.expect(updatedTask.id).to.be.eq(status.id);",
+									"        pm.expect(updatedTask.name).to.be.eq(refStatus.name);",
+									"        pm.expect(updatedTask.description).to.be.eq(refStatus.description);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/{{max_status}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"{{max_status}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit does not exist status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update Status Failed http-status-code must 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 999,\n    \"name\": \"Test Status\",\n    \"description\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit un-manage status (expected id=1)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update un manage Status Failed http-status-code must 400 or 500\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400,500]);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/1', (error, response) => {",
+									"    status = response.json();",
+									"    pm.test(\"The status name 'No Status' will not changed\", () => {",
+									"        pm.expect(status.name.toLowerCase()).to.be.eq(\"no status\");",
+									"        pm.expect(status.description.toLowerCase()).to.be.eq(\"the default status\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Statusless\",\n    \"description\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit status id 2 with status name contains 10 whitespace",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var body =     {",
+									"        \"id\": 1,",
+									"        \"name\": \"          \",",
+									"        \"description\": \"Anonymous status\"",
+									"    }",
+									"var body_str = JSON.stringify(body); ",
+									"status = JSON.parse(body_str);",
+									"pm.request.body.raw = body_str;",
+									"console.log(body_str);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update Staus failed, http-status-code must 400, 422 or 500\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([400,422,500]);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/2', (error, response) => {",
+									"    statusId1 = response.json();   ",
+									"    pm.test('The expected status name is To Do', () => {",
+									"        pm.expect(statusId1.id).to.be.eq(2);",
+									"        pm.expect(statusId1.name.toLowerCase()).to.be.eq(\"to do\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PBI-8 DELETE-STATUS",
+			"item": [
+				{
+					"name": "delete status with no task",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete Staus Successful http-status-code must 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(200);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+ pm.environment.get(\"max_status\"), (error, response) => {",
+									"    pm.test('Get deleted status expected http-status is 404', () => {",
+									"        pm.expect(response.code).to.be.eq(404);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/{{max_status}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"{{max_status}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete status _Dropped_ transfer task to Doing (id must be 3)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete Staus Successful http-status-code must 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(200);",
+									"});",
+									"",
+									"pm.sendRequest(pm.environment.get(\"base_url\")+'/v2/statuses/'+ pm.environment.get(\"waiting_status\"), (error, response) => {",
+									"    pm.test('Get deleted status expected http-status is 404', () => {",
+									"        pm.expect(response.code).to.be.eq(404);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/{{waiting_status}}/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"{{waiting_status}}",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "try to delete the deleted status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete does not exist staus, http-status-code must be 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.eq(404)",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v2/statuses/{{waiting_status}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v2",
+								"statuses",
+								"{{waiting_status}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"tests[\"Test at: \"+ Date()] = false==false;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
